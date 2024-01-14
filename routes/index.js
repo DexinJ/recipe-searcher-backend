@@ -5,7 +5,7 @@ const userRouter = require("./users");
 
 router.use("/users", auth, userRouter);
 
-router.use((next) => {
+router.use((req, res, next) => {
   next(new NotFoundError("Requested resource not found"));
 });
 

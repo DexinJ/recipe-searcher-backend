@@ -8,10 +8,13 @@ const routes = require("./routes");
 const { createUser, login } = require("./controllers/users");
 const errorHandler = require("./middlewares/errorHandler");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
+const rateLimiter = require("./utils/rateLimiter");
+const { validateSignUp, validateLogIn } = require("./middlewares/validation");
+const { CONNECTION } = require("./utils/config");
 
 const { PORT = 3001 } = process.env;
 const app = express();
-mongoose.connect("mongodb://127.0.0.1:27017/wimf_db");
+mongoose.connect(CONNECTION);
 app.disable("x-powered-by");
 
 app.use(cors());
@@ -24,8 +27,9 @@ app.get("/crash-test", () => {
   }, 0);
 });
 app.use(requestLogger);
-app.post("/signup", createUser);
-app.post("/signin", login);
+app.use(rateLimiter);
+app.post("/signup", validateSignUp, createUser);
+app.post("/signin", validateLogIn, login);
 
 app.use(routes);
 

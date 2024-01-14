@@ -78,9 +78,13 @@ const getCurrentUser = (req, res, next) => {
 
 const addToCollection = (req, res, next) => {
   const userId = req.user._id;
-  const { id } = req.body;
+  const { itemId } = req.body;
 
-  Users.findByIdAndUpdate(userId, { $addToSet: { recipes: id } }, { new: true })
+  Users.findByIdAndUpdate(
+    userId,
+    { $addToSet: { recipes: itemId } },
+    { new: true }
+  )
     .orFail()
     .then((user) => res.send(user))
     .catch((e) => {
@@ -96,9 +100,9 @@ const addToCollection = (req, res, next) => {
 
 const removeFromCollection = (req, res, next) => {
   const userId = req.user._id;
-  const { id } = req.body;
+  const { itemId } = req.body;
 
-  Users.findByIdAndUpdate(userId, { $pull: { recipes: id } }, { new: true })
+  Users.findByIdAndUpdate(userId, { $pull: { recipes: itemId } }, { new: true })
     .orFail()
     .then((user) => res.send(user))
     .catch((e) => {
