@@ -1,12 +1,6 @@
 const { Joi, celebrate } = require("celebrate");
 const validator = require("validator");
 
-const validateURL = (value, helpers) => {
-  if (validator.isURL(value)) {
-    return value;
-  }
-  return helpers.error("string.uri");
-};
 const validateSignUp = celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30).messages({
@@ -20,10 +14,6 @@ const validateSignUp = celebrate({
     }),
     password: Joi.string().required().messages({
       "string.empty": 'The "password" field must be filled in',
-    }),
-    avatar: Joi.string().required().custom(validateURL).messages({
-      "string.empty": 'The "avatar" field must be filled in',
-      "string.uri": 'the "avatar" field must be a valid url',
     }),
   }),
 });
