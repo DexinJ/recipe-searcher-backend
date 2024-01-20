@@ -30,7 +30,14 @@ const validateLogIn = celebrate({
   }),
 });
 
+const validateId = celebrate({
+  params: Joi.object().keys({
+    itemId: Joi.string().required(),
+  }),
+});
+
 module.exports = {
   validateSignUp,
   validateLogIn,
+  validateId,
 };

@@ -78,7 +78,7 @@ const getCurrentUser = (req, res, next) => {
 
 const addToCollection = (req, res, next) => {
   const userId = req.user._id;
-  const { itemId } = req.body;
+  const { itemId } = req.params;
 
   Users.findByIdAndUpdate(
     userId,
@@ -100,7 +100,7 @@ const addToCollection = (req, res, next) => {
 
 const removeFromCollection = (req, res, next) => {
   const userId = req.user._id;
-  const { itemId } = req.body;
+  const { itemId } = req.params;
 
   Users.findByIdAndUpdate(userId, { $pull: { recipes: itemId } }, { new: true })
     .orFail()
