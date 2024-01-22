@@ -5,7 +5,6 @@ const {
   removeFromCollection,
   getCollection,
 } = require("../controllers/users");
-const { validateId } = require("../middlewares/validation");
 
 // CRUD
 
@@ -16,8 +15,8 @@ router.get("/me", getCurrentUser);
 router.get("/recipes", getCollection);
 
 // Edit
-router.put("/recipes/:itemId", validateId, addToCollection);
+router.put("/recipes/:itemId", addToCollection);
 // Delete
-router.delete("/recipes/:itemId", validateId, removeFromCollection);
+router.delete("/recipes/:itemId", removeFromCollection);
 
 module.exports = router;

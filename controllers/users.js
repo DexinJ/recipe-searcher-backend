@@ -48,7 +48,13 @@ const login = (req, res, next) => {
         const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
           expiresIn: "7d",
         });
-        res.send({ token, name: user.name });
+        res
+          .cookie("jwt", token, {
+            maxAge: 3600000 * 24 * 7,
+            httpOnly: true,
+            sameSite: true,
+          })
+          .send({ name: user.name });
       })
       .catch((e) => {
         if (e.message === "Incorrect email or password") {
@@ -58,6 +64,16 @@ const login = (req, res, next) => {
         }
       });
   }
+};
+
+const logout = (req, res) => {
+  res
+    .cookie("jwt", "", {
+      maxAge: 5000,
+      httpOnly: true,
+      sameSite: true,
+    })
+    .end();
 };
 
 const getCurrentUser = (req, res, next) => {
@@ -135,6 +151,7 @@ const getCollection = (req, res, next) => {
 module.exports = {
   createUser,
   login,
+  logout,
   getCurrentUser,
   addToCollection,
   removeFromCollection,
