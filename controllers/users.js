@@ -102,7 +102,7 @@ const addToCollection = (req, res, next) => {
     { new: true }
   )
     .orFail()
-    .then((user) => res.send(user))
+    .then((user) => res.send(user.recipes))
     .catch((e) => {
       if (e.name === "DocumentNotFoundError") {
         next(new NotFoundError("Cannot find user"));
@@ -120,7 +120,7 @@ const removeFromCollection = (req, res, next) => {
 
   Users.findByIdAndUpdate(userId, { $pull: { recipes: itemId } }, { new: true })
     .orFail()
-    .then((user) => res.send(user))
+    .then((user) => res.send(user.recipes))
     .catch((e) => {
       if (e.name === "DocumentNotFoundError") {
         next(new NotFoundError("Cannot find user"));
